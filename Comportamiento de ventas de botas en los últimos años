@@ -1,0 +1,323 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "c37f05e6-32c2-4183-80aa-c7fc62ea8839",
+   "metadata": {},
+   "source": [
+    "## Comportamiento de ventas de botas en los ultimos años"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "854c5926-0265-4690-ac80-29b15d985dcb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "##pip install xlrd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "655e4e7e-6387-4200-a194-0d1672f347d9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "##pip install openpyxl"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "d29fb534-034e-47f1-91af-575dc7cb4797",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "##pip install numpy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "9b68d803-66ad-438a-ac0a-e1895d6f0e37",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "##pip install pandas"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "56c400aa-264e-4b8f-ab71-58c57958793d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "##pip install matplotlib"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "2cced824-1244-4cf3-b632-9104c13c102b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np \n",
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "7e9a1bfc-2168-4f36-a637-d9f2a568d1c0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      " adult.csv                   census.csv      movies.csv\n",
+      " airline_data.csv            coches.csv      nhanes_2015_2016.csv\n",
+      " antropometria00.csv         cwurData.csv    pokemon.csv\n",
+      " antropometria-dataset.csv   data.csv        sample_pivot.csv\n",
+      " Book3.csv                   headbrain.csv   tips.csv\n",
+      " Canada.xlsx                 mic2.xlsx      'Ventas PT PISA 2016_2021.xlsx'\n",
+      " Cartwheeldata.csv           mic.xlsx        weight-height.csv\n"
+     ]
+    }
+   ],
+   "source": [
+    "%ls datasets/"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "88ca7b13-c060-40a2-80b1-d2a76b5f74e7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>País</th>\n",
+       "      <th>Canal</th>\n",
+       "      <th>Año natural</th>\n",
+       "      <th>Mes natural</th>\n",
+       "      <th>Organización de ventas</th>\n",
+       "      <th>Grupo de artículos</th>\n",
+       "      <th>Modelo</th>\n",
+       "      <th>Familia</th>\n",
+       "      <th>Tipo Mat</th>\n",
+       "      <th>Línea</th>\n",
+       "      <th>Marca</th>\n",
+       "      <th>Articulo</th>\n",
+       "      <th>Venta SKU</th>\n",
+       "      <th>Venta USD</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Bolivia</td>\n",
+       "      <td>Exportación</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>NOV</td>\n",
+       "      <td>PLASTICAUCHO IND.</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>ARGUS</td>\n",
+       "      <td>ARGUS BAJO</td>\n",
+       "      <td>ZFER</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>VENUS</td>\n",
+       "      <td>ARGUSBAJ/RJ-BL</td>\n",
+       "      <td>350.0</td>\n",
+       "      <td>1582.74</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Bolivia</td>\n",
+       "      <td>Exportación</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>NOV</td>\n",
+       "      <td>PLASTICAUCHO IND.</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>ARGUS</td>\n",
+       "      <td>ARGUS BAJO</td>\n",
+       "      <td>ZFER</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>VENUS</td>\n",
+       "      <td>ARGUSBAJ3/BL-BL</td>\n",
+       "      <td>945.0</td>\n",
+       "      <td>4373.64</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Bolivia</td>\n",
+       "      <td>Exportación</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>NOV</td>\n",
+       "      <td>PLASTICAUCHO IND.</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>ARGUS</td>\n",
+       "      <td>ARGUS COLORES</td>\n",
+       "      <td>ZFER</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>VENUS</td>\n",
+       "      <td>ARGUSBAJ/AZLAG-BL</td>\n",
+       "      <td>517.0</td>\n",
+       "      <td>2439.53</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Bolivia</td>\n",
+       "      <td>Exportación</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>NOV</td>\n",
+       "      <td>PLASTICAUCHO IND.</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>DONNA</td>\n",
+       "      <td>DONNA CLASICO</td>\n",
+       "      <td>ZFER</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>VENUS</td>\n",
+       "      <td>DNN/BL-BL</td>\n",
+       "      <td>522.0</td>\n",
+       "      <td>1983.62</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>Bolivia</td>\n",
+       "      <td>Exportación</td>\n",
+       "      <td>2017</td>\n",
+       "      <td>NOV</td>\n",
+       "      <td>PLASTICAUCHO IND.</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>DONNA</td>\n",
+       "      <td>DONNA MOCASIN</td>\n",
+       "      <td>ZFER</td>\n",
+       "      <td>CALZADO LONA</td>\n",
+       "      <td>VENUS</td>\n",
+       "      <td>DNN MCS/AZDIND-BL</td>\n",
+       "      <td>160.0</td>\n",
+       "      <td>755.16</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "      País        Canal  Año natural Mes natural Organización de ventas  \\\n",
+       "0  Bolivia  Exportación         2017         NOV      PLASTICAUCHO IND.   \n",
+       "1  Bolivia  Exportación         2017         NOV      PLASTICAUCHO IND.   \n",
+       "2  Bolivia  Exportación         2017         NOV      PLASTICAUCHO IND.   \n",
+       "3  Bolivia  Exportación         2017         NOV      PLASTICAUCHO IND.   \n",
+       "4  Bolivia  Exportación         2017         NOV      PLASTICAUCHO IND.   \n",
+       "\n",
+       "  Grupo de artículos Modelo        Familia Tipo Mat         Línea  Marca  \\\n",
+       "0       CALZADO LONA  ARGUS     ARGUS BAJO     ZFER  CALZADO LONA  VENUS   \n",
+       "1       CALZADO LONA  ARGUS     ARGUS BAJO     ZFER  CALZADO LONA  VENUS   \n",
+       "2       CALZADO LONA  ARGUS  ARGUS COLORES     ZFER  CALZADO LONA  VENUS   \n",
+       "3       CALZADO LONA  DONNA  DONNA CLASICO     ZFER  CALZADO LONA  VENUS   \n",
+       "4       CALZADO LONA  DONNA  DONNA MOCASIN     ZFER  CALZADO LONA  VENUS   \n",
+       "\n",
+       "            Articulo  Venta SKU  Venta USD  \n",
+       "0     ARGUSBAJ/RJ-BL      350.0    1582.74  \n",
+       "1    ARGUSBAJ3/BL-BL      945.0    4373.64  \n",
+       "2  ARGUSBAJ/AZLAG-BL      517.0    2439.53  \n",
+       "3          DNN/BL-BL      522.0    1983.62  \n",
+       "4  DNN MCS/AZDIND-BL      160.0     755.16  "
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df = pd.read_excel('datasets/Ventas PT PISA 2016_2021.xlsx',\n",
+    "                   sheet_name='BDD',\n",
+    "                   engine = 'openpyxl'\n",
+    "                  )\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "c8306065-6806-4d65-8988-500e1f89c9ad",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['País', 'Canal', 'Año natural', 'Mes natural', 'Organización de ventas',\n",
+       "       'Grupo de artículos', 'Modelo', 'Familia', 'Tipo Mat', 'Línea', 'Marca',\n",
+       "       'Articulo', 'Venta SKU', 'Venta USD'],\n",
+       "      dtype='object')"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5fe0a8aa-c25f-4945-bc78-29914faba326",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.drop(['País', 'Canal', 'Organización de ventas', 'Grupo de artículos', \n",
+    "         'Familia', 'Tipo Mat', ],\n",
+    "        axis = 1, inplace = True)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.10"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
